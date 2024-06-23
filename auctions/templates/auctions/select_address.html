@@ -1,0 +1,37 @@
+{% extends "auctions/layout.html" %}
+{% load crispy_forms_tags %}
+
+{% block body %}
+<body style="margin-top: 100px">
+<form method="post" action="{% url 'selectAddress' %}">
+    {% csrf_token %}
+    {% if existing_addresses %}
+
+    {% for address in existing_addresses %}
+    <div class="card">
+        <input type="radio" id="address_{{ forloop.counter }}" name="selected_address" value="{{ address.id }}">
+        <label for="address_{{ forloop.counter }}">
+            <div class="card-body col-lg-3 col-md-6 mb-4">
+                <h5 class="card-title">{{ address.first_name }} {{ address.last_name }}</h5>
+                <p class="card-text">{{ address.street_address }}</p>
+                <p class="card-text">{{ address.mobile_no }}</p>
+                <!-- Add other address fields here -->
+            </div>
+        </label>
+    </div>
+    {% endfor %}
+<!--    <a href="{% url 'pay' %}" class="btn btn-lg btn-warning btn-block text-uppercase" style="font-size: 80%; border-radius: 5rem; letter-spacing: .1rem; font-weight: bold;padding: 1rem;transition: all 0.2s;">-->
+            <button type="submit"  class="btn btn-lg btn-warning btn-block text-uppercase" style="font-size: 80%; border-radius: 5rem; letter-spacing: .1rem; font-weight: bold;padding: 1rem;transition: all 0.2s;">
+<!--        Deliver to this address </a>-->
+                Deliver to this address</button>
+    {% endif %}
+    <a href="{% url 'address' %}" class="btn btn-lg btn-warning btn-block text-uppercase" style="font-size: 80%; border-radius: 5rem; letter-spacing: .1rem; font-weight: bold;padding: 1rem;transition: all 0.2s;">
+<!--    <button onclick="location.href='{% url 'address' %}'"  class="btn btn-lg btn-warning btn-block text-uppercase" style="font-size: 80%; border-radius: 5rem; letter-spacing: .1rem; font-weight: bold;padding: 1rem;transition: all 0.2s;">-->
+        Add a new address </a>
+
+<!--    <button type="submit">Use Selected Address</button>-->
+</form>
+
+
+</body>
+{% endblock %}

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dynamic Timers</title>
+</head>
+<body>
+<ul>
+    {% for item in items %}
+    <li id="timer-{{ item.id }}">{{ item.id }}</li>
+    {% endfor %}
+</ul>
+
+<script>
+    function updateTimers() {
+      // Get all timer elements (assuming they share the same base class)
+      var timers = document.getElementsByClassName("timer");
+
+      // Loop through each timer element
+      for (var i = 0; i < timers.length; i++) {
+        // Extract the ID from the element's ID (assuming the format is "timer-<id>")
+        var timerId = timers[i].id.split("-")[1];
+
+        // Access the corresponding timer data based on the ID (replace this with your logic)
+        var timerData = getTimerData(timerId);
+        var remainingTime = timerData.remainingTime;
+
+        // Update the timer element's content
+        timers[i].innerHTML = remainingTime;
+      }
+    }
+
+    // Function to get timer data (implementation depends on your data structure)
+    function getTimerData(id) {
+      // Replace this with your logic to retrieve timer data based on the ID
+      // This example assumes a hypothetical `timers` data structure
+      var timers = {
+        1: { remainingTime: "00:10" },
+        2: { remainingTime: "01:25" },
+        // ... other timers
+      };
+      return timers[id];
+    }
+
+    // Update timers every second
+    setInterval(updateTimers, 1000);
+</script>
+</body>
+</html>

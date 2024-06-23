@@ -91,14 +91,17 @@
 
     <!-- RIGHT COLUMN - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
         <div class="col-md-5">
-            <h1 style="margin-bottom: 30px; word-wrap: break-word;">{{ object.productnames }}</h1>
+            <h1 style="margin-bottom: 30px; word-wrap: break-word;">
+                <center><div class="countdown" id="countdown-{{ object.id }}" value="{{ object.timer }}"></div></center>
+                {{ object.productnames }}
+                </h1>
 
         <!-- PRODUCT DETAILS -->
               <dl class="row">
                   
 
                   <dt class="col-sm-4 mb-3 d-block text-muted">Current Price:</dt>
-                  <dd class="col-sm-8"> <strong>${{ object.startingbids }}</strong> </dd>
+                  <dd class="col-sm-8"> <strong>₹ {{ object.startingbids }}</strong> </dd>
                           
                   <dt class="col-sm-4 mb-3 d-block text-muted">Number of Bids:</dt>
                   {% if bidcount is 0 %} <dd class="col-sm-8"> No bids yet </dd>
@@ -107,8 +110,8 @@
                   <dt class="col-sm-4 mb-3 d-block text-muted">Category:</dt>
                   <dd class="col-sm-8"> {{ object.category }} </dd>
 
-                  <dt class="col-sm-4 mb-3 d-block text-muted">Listed by:</dt>
-                  <dd class="col-sm-8"> {{ object.lister }} </dd>
+                  <dt class="col-sm-4 mb-3 d-block text-muted">Minimum coin needed to start Bid:</dt>
+                  <dd class="col-sm-8"> {{ object.minimum_charge }} </dd>
 
                   <dt class="col-sm-4 mb-3 d-block text-muted">Date Posted:</dt>
                   <dd class="col-sm-8"> {{ object.created }} </dd>
@@ -130,33 +133,47 @@
 
         <!-- SUBMIT BID FORM -->
             {% if user.username %}
+
               <form action="{% url 'bid' object.id %}" method="post">
+
                   <div>
                       {% csrf_token %}
+                      {% if object.timer > now %}
+
                       {{ bidform.bidprice|as_crispy_field }}
                       <button class="btn btn-lg btn-warning btn-block text-uppercase" style="font-size: 80%; border-radius: 5rem; letter-spacing: .1rem; font-weight: bold;padding: 1rem;transition: all 0.2s;">
                               Submit a Bid</button>
+                      {% else %}
+                      <button class="btn btn-lg btn-warning btn-block text-uppercase" style="font-size: 80%; border-radius: 5rem; letter-spacing: .1rem; font-weight: bold;padding: 1rem;transition: all 0.2s;" disabled>
+                          Bid Expired</button>
+                      {% endif%}
+
                   </div>
               </form>
             {% else %}
+
                       <a href="{% url 'register'%}">
                       <button class="btn btn-lg btn-warning btn-block text-uppercase" style="font-size: 80%; border-radius: 5rem; letter-spacing: .1rem; font-weight: bold;padding: 1rem;transition: all 0.2s;">
                               Register now! </button>
                       </a>
-            {% endif %}   
+            {% endif %}
 
       <!-- WATCHLIST -->
-          <br />
-              {% if user.username %}
-              {% if added%}
-                <a href="{% url 'removewatch' object.id %}"><button class="btn btn-danger btn-lg btn-primary btn-block text-uppercase" style="#51624F; font-size: 80%; border-radius: 5rem; letter-spacing: .1rem; font-weight: bold;padding: 1rem;transition: all 0.2s;">
-                          Remove from watchlist</button></a>
-              {% else %}
-                <a href="{% url 'addwatch' object.id %}"><button class="btn btn-success btn-lg btn-primary btn-block text-uppercase" style="font-size: 80%; border-radius: 5rem; letter-spacing: .1rem; font-weight: bold;padding: 1rem;transition: all 0.2s;">
-                          Add to watchlist</button></a>
-              {% endif %}
-              {% endif %} 
-      
+<!--            commented for now-->
+<!--          <br />-->
+<!--            {% if object.timer > now %}-->
+
+<!--                {% if user.username %}-->
+<!--                  {% if added%}-->
+<!--                    <a href="{% url 'removewatch' object.id %}"><button class="btn btn-danger btn-lg btn-primary btn-block text-uppercase" style="#51624F; font-size: 80%; border-radius: 5rem; letter-spacing: .1rem; font-weight: bold;padding: 1rem;transition: all 0.2s;">-->
+<!--                              Remove from watchlist</button></a>-->
+<!--                  {% else %}-->
+<!--                    <a href="{% url 'addwatch' object.id %}"><button class="btn btn-success btn-lg btn-primary btn-block text-uppercase" style="font-size: 80%; border-radius: 5rem; letter-spacing: .1rem; font-weight: bold;padding: 1rem;transition: all 0.2s;">-->
+<!--                              Add to watchlist</button></a>-->
+<!--                  {% endif %}-->
+<!--                  {% endif %}-->
+<!--            {% endif %}-->
+
       <!-- CLOSE BID-->
           <br />
               {% if user.username %}
@@ -166,7 +183,34 @@
                 {% endif %}
               {% endif %}
         </div>
-      </div>
+        <script>
+            // Define the updateCountdown function for each countdown element
+            (function() {
+                const countdownElement = document.getElementById("countdown-{{ object.id }}");
+                const dateString = "{{object.timer}}";
+                const modifiedDateString = dateString.replace(/,/g, '').replace('p.m.', 'PM').replace('a.m.', 'AM')
+                const targetDate = new Date(modifiedDateString); // Extract timer value from element content
+
+                function updateCountdown() {
+                    const now = new Date();
+                    const timeRemaining = targetDate - now;
+
+                    if (timeRemaining >= 0) {
+                        const hours = Math.floor(timeRemaining / 3600000);
+                        const minutes = Math.floor((timeRemaining % 3600000) / 60000);
+                        const seconds = Math.floor((timeRemaining % 60000) / 1000);
+
+                        countdownElement.textContent = hours + ":" + minutes + ":" + seconds;
+                    }
+                }
+
+                // Update countdown every second
+                setInterval(updateCountdown, 1000);
+            })();
+        </script>
+
+
+    </div>
 </div>  
 
 

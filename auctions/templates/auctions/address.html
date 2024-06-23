@@ -1,0 +1,115 @@
+{% extends "auctions/layout.html" %}
+{% load crispy_forms_tags %}
+
+{% block body %}
+<body style="margin-top: 100px">
+{% if messages %}
+{% for message in messages %}
+<div class="alert {{ message.tags }}">
+<h2>    {{ message }} </h2>
+</div>
+{% endfor %}
+{% endif %}
+
+<!--<form method="post">-->
+<!--    {% csrf_token %}-->
+<!--    {% for address in existing_addresses %}-->
+<!--    <div class="card">-->
+<!--        <input type="radio" id="address_{{ forloop.counter }}" name="selected_address" value="{{ address.id }}">-->
+<!--        <label for="address_{{ forloop.counter }}">-->
+<!--            <div class="card-body col-lg-3 col-md-6 mb-4">-->
+<!--                <h5 class="card-title">{{ address.first_name }} {{ address.last_name }}</h5>-->
+<!--                <p class="card-text">{{ address.street_address }}</p>-->
+<!--                <p class="card-text">{{ address.mobile_no }}</p>-->
+<!--                &lt;!&ndash; Add other address fields here &ndash;&gt;-->
+<!--            </div>-->
+<!--        </label>-->
+<!--    </div>-->
+<!--    {% endfor %}-->
+<!--    <button type="submit">Use Selected Address</button>-->
+<!--</form>-->
+
+<section class="get-in-touch">
+    <h1 class="title">Billing & Shipping Address</h1>
+    <form action="{% url 'addAddress' %}" class="row" method="post">
+
+        {% csrf_token %}
+        <h2>Shipping Address: </h2>
+        <div class="form-field col-lg-12">
+        </div>
+<!--        <div class="shipping-address-fields">-->
+            <div class="form-field col-lg-6">
+                {{ Sform.first_name | as_crispy_field }}
+            </div>
+            <div class="form-field col-lg-6">
+                {{ Sform.last_name | as_crispy_field }}
+            </div>
+            <div class="form-field col-lg-12">
+                {{ Sform.street_address | as_crispy_field }}
+            </div>
+            <div class="form-field col-lg-6">
+                {{ Sform.city | as_crispy_field }}
+            </div>
+            <div class="form-field col-lg-3">
+                {{ Sform.state | as_crispy_field }}
+            </div>
+            <div class="form-field col-lg-3">
+                {{ Sform.pin_code | as_crispy_field }}
+            </div>
+            <div class="form-field col-lg-3">
+                {{ Sform.mobile_no | as_crispy_field }}  </div>
+
+            <div class="form-field col-lg-3">
+                {{ Sform.alternate_no | as_crispy_field }}  </div>
+
+<!--        </div>-->
+
+        <div class="contact-form form-field col-lg-12">
+            <button  class="submit-btn" type="submit" value="Continue">Save Address</button>
+
+        </div>
+    </form>
+</section>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js" integrity="sha512-mUwvOMBOcqainvVB6Cs0kVHqC6RIFA5HWdmuxu/LmD7rXoNmA09mDbpEtOpsVmGOTARhtx4zCbpTJ8FyCEGg==" crossorigin="anonymous"></script>
+<script>
+    $(document).ready(function() {
+        $("#addressForm").validate({
+            rules: {
+                "mobile_no": {
+                    required: true,
+                    minlength: 10,
+                    maxlength: 15,
+                    digits: true,
+                },
+                "alternate_no": {
+                    minlength: 10,
+                    maxlength: 15,
+                    digits: true,
+                },
+            },
+            messages: {
+                "mobile_no": {
+                    required: "Mobile number is required.",
+                    minlength: "Mobile number must be at least 10 digits.",
+                    maxlength: "Mobile number cannot exceed 15 digits.",
+                    digits: "Mobile number must be numeric."
+                },
+                "alternate_no": {
+                    minlength: "Alternate mobile number must be at least 10 digits (optional).",
+                    maxlength: "Alternate mobile number cannot exceed 15 digits.",
+                    digits: "Alternate mobile number must be numeric (optional)."
+                },
+            },
+            submitHandler: function(form) {
+                form.submit(); // Submit the form if validation passes
+            }
+        });
+    });
+</script>
+
+
+</body>
+
+{% endblock %}

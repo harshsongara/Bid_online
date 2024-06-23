@@ -1,0 +1,74 @@
+{% extends "auctions/layout.html" %}
+{% load crispy_forms_tags %}
+
+{% block body %}
+{% load static %}
+
+
+<div class="container" style="margin: 15% auto 50% auto">
+    <ul>
+        <div class="card-body col-lg-3 col-md-6 mb-4">
+            <h3>Shipping Address: </h3>
+            <h5 class="card-title">{{ address.first_name }} {{ address.last_name }}</h5>
+            <p class="card-text">{{ address.street_address }}</p>
+            <p class="card-text">{{ address.mobile_no }}</p>
+            <!-- Add other address fields here -->
+        </div>
+<!--        <h3>Available Coins: {{ coins.coins_available }} </h3>-->
+        <!-- PRODUCT DETAILS -->
+        <h3 style="margin-bottom: 30px" >Details for {{ object.productnames }}: </h3>
+        <dl class="row">
+
+            <dt class="col-sm-4 mb-3 d-block text-muted">Highest Bidder: </dt>
+            <dd class="col-sm-8"> {{ object.bidder }} </dd>
+
+            <dt class="col-sm-4 mb-3 d-block text-muted">Available Coins: </dt>
+            <dd class="col-sm-8">{{ coins.coins_available }} </dd>
+
+            <dt class="col-sm-4 mb-3 d-block text-muted">Final Bid:</dt>
+            <dd class="col-sm-8"> ₹ {{ object.finalbid }} </dd>
+
+            <dt class="col-sm-4 mb-3 d-block text-muted">Delivery Charges:</dt>
+            <dd class="col-sm-8"> 0 </dd>
+
+            <dt class="col-sm-4 mb-3 d-block text-muted">Minimum Bid Charges:</dt>
+            <dd class="col-sm-8"> -{{ listings.minimum_charge }} </dd>
+
+            <dt class="col-sm-4 mb-3 d-block text-muted">Total Payment:</dt>
+            <dd class="col-sm-8"> {{ total }} </dd>
+            <!--                  <a href="{% url 'register'%}">-->
+            <button onclick="location.href='{% url 'pay' %}'"  class="btn btn-lg btn-warning btn-block text-uppercase" style="font-size: 80%; border-radius: 5rem; letter-spacing: .1rem; font-weight: bold;padding: 1rem;transition: all 0.2s;">
+                Proceed to Buy! </button>
+            <!--                  </a>-->
+
+            <!--                  <dd class="col-sm-8" style="margin-top: 5%"> <a href="{% url 'index' %}"> Checkout other Listings! </a> </dd>-->
+            {% if messages %}
+            <script>
+                window.onload = function() {
+                    {% for message in messages %}
+                    alert("{{ message }}");
+                    {% endfor %}
+                }
+            </script>
+            {% endif %}
+        </dl>
+
+
+        <!-- ERROR ALERT -->
+        {% if error %}
+        <br />
+        <center class="alert alert-danger" style="margin-bottom:10px; height:30px; line-height:30px; padding:0px 15px;" role="alert">
+            {{error}}
+        </center>
+        {% endif %}
+        {% if success %}
+        <br />
+        <center class="alert alert-success" style="margin-bottom:10px; height:30px; line-height:30px; padding:0px 15px;" role="alert">
+            {{success}}
+        </center>
+        {% endif %}
+    </ul>
+
+</div>
+
+{% endblock %}

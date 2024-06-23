@@ -3,17 +3,28 @@
 {% block body %}
 {% load static %}
 
+
 <!-- HEADER -->
+
 <div class="container">
     <div class="jumbotron" style="margin: 38px auto; background:url(https://i.ibb.co/nsTz1gg/Active-Listings.gif) no-repeat; background-size: 100%;"></header>
     <h1> <br/><br/><br/><br/><br/> </h1>
     </div>
-    
+
 <!-- LOOP TO OUTPUT ACTIVE LISTINGS -->
     <div class="row text-left">
     {% for object in object %}
+
             <div class="col-lg-3 col-md-6 mb-4">
                 <div class="card h-100">
+<!--                    <center><p id="demo-{{ object.id }}"></p></center>-->
+<!--                    <center><p id="demo-{{ object.id }}" class="countdown-timer"></p></center>-->
+<!--                    <center><p id="demo"></p></center>-->
+                    <center><div class="countdown" id="countdown-{{ object.id }}" value="{{ object.timer }}">
+<!--                    <input type="hidden" value="{{ object.timer }}">-->
+                </div>
+                    </center>
+<!--                    <input type="hidden" id="demo" value="{{ object.timer }}">-->
                     {% if object.images %}
                         <a  href="{% url 'listingpage' object.id %}">
                             <img style="width: 100%; height: 10.3rem"  class="card-img-center" src="{{ object.images }}">
@@ -22,29 +33,83 @@
                         <a href="{% url 'listingpage' object.id %}">
                             <img class="card-img-top" src="https://i.ibb.co/T8nxLQT/No-Image-Available.png" alt="">
                         </a>
-                    {% endif %}  
+
+                    {% endif %}
                     <div class="card-body">
-                    <center>    <h5 class="card-title"> {{ object.productnames }} </h5>  </center>
-                        <p class="card-text" style="margin: 5px"> <span style="font-size:small;"> Current Bid: </span> <span style="color: green; font-weight: bold" > ${{ object.startingbids }}  </span> 
-                        <br/> <span style="font-size: small; display: block; text-overflow: ellipsis; word-wrap: break-word; overflow: hidden; max-height: 7.2em; line-height: 1.8em; margin-top: 10px"> 
+                    <center>    <h5 class="card-title"> {{ object.productnames }}  </h5>  </center>
+                        <p class="card-text" style="margin: 5px"> <span style="font-size:small;"> Current Bid: </span> <span style="color: green; font-weight: bold" > ₹ {{ object.startingbids }}  </span>
+                        <br/> <span style="font-size: small; display: block; text-overflow: ellipsis; word-wrap: break-word; overflow: hidden; max-height: 7.2em; line-height: 1.8em; margin-top: 10px">
                                 {{ object.descriptions }} </span> </p>
                     </div>
                     <div class="card-footer " style="background: white;">
-                        <a href="{% url 'listingpage' object.id %}" class="btn btn-lg btn-warning btn-block text-uppercase" style="font-size: 80%; border-radius: 5rem; letter-spacing: .1rem; font-weight: bold; ;transition: all 0.2s;" 
+
+                        <a href="{% url 'listingpage' object.id %}" class="btn btn-lg btn-warning btn-block text-uppercase" style="font-size: 80%; border-radius: 5rem; letter-spacing: .1rem; font-weight: bold; ;transition: all 0.2s;"
                         class="btn">Check Item</a>
+
+
                     </div>
                 </div>
             </div>
+        <script>
+            // Define the updateCountdown function for each countdown element
+            (function() {
+                const countdownElement = document.getElementById("countdown-{{ object.id }}");
+                const dateString = "{{object.timer}}";
+                const modifiedDateString = dateString.replace(/,/g, '').replace('p.m.', 'PM').replace('a.m.', 'AM')
+                const targetDate = new Date(modifiedDateString); // Extract timer value from element content
+
+                function updateCountdown() {
+                    const now = new Date();
+                    const timeRemaining = targetDate - now;
+
+                    if (timeRemaining <= 0) {
+                        countdownElement.textContent = "Auction ended!";
+                    } else {
+                        const hours = Math.floor(timeRemaining / 3600000);
+                        const minutes = Math.floor((timeRemaining % 3600000) / 60000);
+                        const seconds = Math.floor((timeRemaining % 60000) / 1000);
+
+                        countdownElement.textContent = hours + ":" + minutes + ":" + seconds;
+                    }
+                }
+
+                // Update countdown every second
+                setInterval(updateCountdown, 1000);
+            })();
+        </script>
     {% endfor %}
     </div>
 </div>
+<!--<script>-->
 
+<!--    const targetDate = new Date("{{ object.timer }}"); // Replace with the actual timer value-->
+
+<!--    function updateCountdown() {-->
+<!--        const now = new Date();-->
+<!--        const timeRemaining = targetDate - now;-->
+
+<!--        if (timeRemaining <= 0) {-->
+<!--            document.getElementById("countdown-35").textContent = "Auction ended!";-->
+<!--        } else {-->
+<!--            const hours = Math.floor(timeRemaining / 3600000);-->
+<!--            const minutes = Math.floor((timeRemaining % 3600000) / 60000);-->
+<!--            const seconds = Math.floor((timeRemaining % 60000) / 1000);-->
+
+<!--    //        document.getElementById("countdown-{{ object.id }}").textContent = hours+":"+minutes+":"+seconds;-->
+<!--            document.getElementById("countdown-35").textContent = "object.time"-->
+<!--        }-->
+<!--    }-->
+
+<!--    // Update countdown every second-->
+<!--    setInterval(updateCountdown, 1000);-->
+<!--</script>-->
 {% endblock %}
 
 
 
 
  <!-- <img src="{{ object.images }}" onerror="this.style.opacity='0'"
-                     width="200" 
-                     class="ml-lg-5 order-1 order-lg-2" 
+                     width="200"
+                     class="ml-lg-5 order-1 order-lg-2"
                      alt="No Image Available for {{ object.productnames}}">  -->
+

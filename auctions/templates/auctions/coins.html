@@ -1,0 +1,48 @@
+{% extends "auctions/layout.html" %}
+{% load crispy_forms_tags %}
+
+{% block body %}
+{% load static %}
+
+
+<div class="container" style="margin: 15% auto 50% auto">
+    <ul>
+    <h3>Available Coins: {{ coins.coins_available }} </h3>
+    <form action="{% url 'addCoin' %}" method="post">
+        <div>
+        {% csrf_token %}
+
+    <div class="form-field col-lg-6" >
+        {{ form.coins|as_crispy_field }}
+    </div>
+
+    <button class="btn btn-lg btn-warning btn-block text-uppercase col-lg-6" style="font-size: 80%; border-radius: 5rem; letter-spacing: .1rem; font-weight: bold;padding: 1rem;transition: all 0.2s;">
+        Add coins</button>
+        </div>
+    </form>
+        <br>
+
+<!--        <button class="btn btn-lg btn-warning btn-block text-uppercase col-lg-6" type="submit" formaction="{% url 'transactions_list' %}" style="font-size: 80%; border-radius: 5rem; letter-spacing: .1rem; font-weight: bold;padding: 1rem;transition: all 0.2s;">-->
+<!--            Transaction History </button>-->
+        <a href="{% url 'transactions_list' %}" class="btn btn-lg btn-warning btn-block text-uppercase" style="font-size: 80%; border-radius: 5rem; letter-spacing: .1rem; font-weight: bold; ;transition: all 0.2s;"
+           class="btn">Transaction History</a>
+
+
+    <!-- ERROR ALERT -->
+    {% if error %}
+    <br />
+    <center class="alert alert-danger" style="margin-bottom:10px; height:30px; line-height:30px; padding:0px 15px;" role="alert">
+        {{error}}
+    </center>
+    {% endif %}
+    {% if success %}
+    <br />
+    <center class="alert alert-success" style="margin-bottom:10px; height:30px; line-height:30px; padding:0px 15px;" role="alert">
+        {{success}}
+    </center>
+    {% endif %}
+        </ul>
+
+</div>
+
+{% endblock %}

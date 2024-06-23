@@ -42,7 +42,8 @@
               {% endif %}  
               <div class="card-body text-center">
                   <a href="{% url 'closed' object.listingid %}">
-                      <h5 class="card-title mb-0"> [CLOSED] {{ object.productnames }} </h5>
+                      <h5 class="card-title mb-0"> {{ object.productnames }} </h5>
+                      <p class="card-title mb-0"> Pay: {{ object.finalbid }} </p>
                   </a>
               </div>
           </div>
@@ -79,7 +80,6 @@
   
     <!-- LOOP TO SHOW WATCHLIST -->
     {% for object in object %}
-      
       <div class="col-xl-3 col-md-6 mb-4" >
         <div class="card h-100 border-0 shadow" >
               {% if object.images %}
@@ -96,8 +96,17 @@
                   <h5 class="card-title mb-0"> {{ object.productnames }} </h5>
                 </a>
                   <div class="card-text text-black-50">
-                      ${{ object.finalbid }}
+                      ₹ {{ object.finalbid }}
                   </div>
+                  {% if object.listingid in highBids %}
+                  <div class="card-text text-black-50">
+                      YOU ARE HIGHEST BIDDER
+                  </div>
+                  {% else %}
+                  <div class="card-text text-black-50">
+                      YOU ARE LOOSING,BID MORE TO WIN
+                  </div>
+                  {% endif %}
               </div>
         </div>
       </div>

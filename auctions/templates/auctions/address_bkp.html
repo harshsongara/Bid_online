@@ -1,0 +1,128 @@
+{% extends "auctions/layout.html" %}
+{% load crispy_forms_tags %}
+
+{% block body %}
+<body style="margin-top: 100px">
+<!--<form method="post">-->
+<!--    {% csrf_token %}-->
+<!--    {% for address in existing_addresses %}-->
+<!--    <div class="card">-->
+<!--        <input type="radio" id="address_{{ forloop.counter }}" name="selected_address" value="{{ address.id }}">-->
+<!--        <label for="address_{{ forloop.counter }}">-->
+<!--            <div class="card-body col-lg-3 col-md-6 mb-4">-->
+<!--                <h5 class="card-title">{{ address.first_name }} {{ address.last_name }}</h5>-->
+<!--                <p class="card-text">{{ address.street_address }}</p>-->
+<!--                <p class="card-text">{{ address.mobile_no }}</p>-->
+<!--                &lt;!&ndash; Add other address fields here &ndash;&gt;-->
+<!--            </div>-->
+<!--        </label>-->
+<!--    </div>-->
+<!--    {% endfor %}-->
+<!--    <button type="submit">Use Selected Address</button>-->
+<!--</form>-->
+
+<section class="get-in-touch">
+    <h1 class="title">Billing & Shipping Address</h1>
+    <form action="{% url 'addAddress' %}" class="row" method="post">
+
+        {% csrf_token %}
+<!--        {{ Bform.non_field_errors }}-->
+
+        <h2>Billing Address</h2>
+        <div class="form-field col-lg-6">
+            {{ Bform.first_name | as_crispy_field }}
+        </div>
+        <div class="form-field col-lg-6">
+            {{ Bform.last_name | as_crispy_field }}
+        </div>
+        <div class="form-field col-lg-12">
+            {{ Bform.street_address | as_crispy_field }}
+        </div>
+        <div class="form-field col-lg-6">
+            {{ Bform.city | as_crispy_field }}
+        </div>
+        <div class="form-field col-lg-3">
+            {{ Bform.state | as_crispy_field }}
+        </div>
+        <div class="form-field col-lg-3">
+            {{ Bform.pin_code | as_crispy_field }}  </div>
+        <div class="form-field col-lg-3">
+            {{ Bform.mobile_no | as_crispy_field }}  </div>
+
+        <div class="form-field col-lg-3">
+            {{ Bform.alternate_no | as_crispy_field }}  </div>
+
+        <h2>Shipping Address: </h2>
+        <div class="form-field col-lg-12">
+            <label for="same_billing_address">
+                <input type="checkbox" id="same_billing_address" name="same_billing_address" checked>  Same as Billing Address
+            </label>
+        </div>
+        <div class="shipping-address-fields">
+            <div class="form-field col-lg-6">
+                {{ Sform.first_name | as_crispy_field }}
+            </div>
+            <div class="form-field col-lg-6">
+                {{ Sform.last_name | as_crispy_field }}
+            </div>
+            <div class="form-field col-lg-12">
+                {{ Sform.street_address | as_crispy_field }}
+            </div>
+            <div class="form-field col-lg-6">
+                {{ Sform.city | as_crispy_field }}
+            </div>
+            <div class="form-field col-lg-3">
+                {{ Sform.state | as_crispy_field }}
+            </div>
+            <div class="form-field col-lg-3">
+                {{ Sform.pin_code | as_crispy_field }}
+            </div>
+            <div class="form-field col-lg-3">
+                {{ Sform.mobile_no | as_crispy_field }}  </div>
+
+            <div class="form-field col-lg-3">
+                {{ Sform.alternate_no | as_crispy_field }}  </div>
+
+        </div>
+
+        <div class="contact-form form-field col-lg-12">
+            <button  class="submit-btn" type="submit" value="Continue">Save Address</button>
+
+        </div>
+    </form>
+</section>
+</body>
+
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+    const sameBillingCheckbox = document.getElementById('same_billing_address');
+    const shippingAddressFields = document.querySelector('.shipping-address-fields');
+    const shippingInputs = shippingAddressFields.querySelectorAll('input');
+
+    // Function to toggle the required attribute of shipping address inputs
+    function toggleShippingRequired() {
+        shippingInputs.forEach(input => {
+            input.required = !sameBillingCheckbox.checked;
+        });
+    }
+
+    // Function to toggle the visibility of shipping address fields
+    function toggleShippingAddress() {
+        if (sameBillingCheckbox.checked) {
+            shippingAddressFields.style.display = 'none';
+        } else {
+            shippingAddressFields.style.display = 'block';
+        }
+        toggleShippingRequired(); // Also update the required attribute
+    }
+
+    // Call the function on page load
+    toggleShippingAddress();
+
+    // Add event listener for changes to the checkbox
+    sameBillingCheckbox.addEventListener('change', toggleShippingAddress);
+});
+
+</script>
+
+{% endblock %}

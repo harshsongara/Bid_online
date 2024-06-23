@@ -3,7 +3,15 @@
 
 {% block body %}
     <body style="margin-top: 100px">
-        <section class="get-in-touch">
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert {{ message.tags }}">
+        {{ message }}
+    </div>
+    {% endfor %}
+    {% endif %}
+
+    <section class="get-in-touch">
         <h1 class="title">Create Listings</h1>
         <form class="row" method="post">
         {% csrf_token %}
@@ -16,6 +24,12 @@
             <div class="form col-lg-6 ">
                 {{ form.category|as_crispy_field }}
             </div>
+            <div class="form col-lg-6 ">
+                {{ form.timer|as_crispy_field }}
+            </div>
+            <div class="form col-lg-6 ">
+                {{ form.minimum_charge|as_crispy_field }}
+            </div>
             <div class="form col-lg-12 ">
                 {{ form.images|as_crispy_field }}
             </div>
@@ -27,6 +41,7 @@
             </div>
         </form>
         </section>
+
     </body>
 
 {% endblock %}

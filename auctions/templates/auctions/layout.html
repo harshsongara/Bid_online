@@ -53,10 +53,22 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'category' %}">Categories</a>      
-                </li
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'coin' %}">My Coins</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'address' %}">Manage address</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'orders' %}">My Orders</a>
+                </li>
+
+                {% if user.is_staff or user.is_superuser %}
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'create' %}">Create Listings</a>
                 </li>
+                {% endif %}
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
                 </li>
@@ -68,10 +80,10 @@
                         <a class="nav-link" href="{% url 'register' %}">Register</a>
                     </li>
             {% endif %}
-            
+
         </div>
         </div>
-    </nav>    
+    </nav>
     
         <hr>
         {% block body %}
@@ -80,7 +92,7 @@
 
     <footer class="py-5 bg-dark" style="margin-top: 10%; display: block;">
         <div class="container">
-            <p class="m-0 text-center text-white">Copyright &copy; Angelu Garingo 2020</p>
+            <p class="m-0 text-center text-white">####################</p>
         </div>
     </footer>
 
