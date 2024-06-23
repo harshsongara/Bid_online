@@ -24,6 +24,8 @@ SECRET_KEY = '6ps8j!crjgrxt34cqbqn7x&b3y%(fny8k8nh21+qa)%ws3fh!q'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+# USE_TZ = True
+# TIME_ZONE = 'Asia/Kolkata'
 
 ALLOWED_HOSTS = []
 
@@ -32,6 +34,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'auctions',
+    'background_task',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -111,7 +114,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Kolkata'
 
 USE_I18N = True
 
